@@ -4,7 +4,7 @@
 #include <cstdlib>
 
 // KECEPATAN
-const float SPEED_MULTIPLIER = 4.0f; // ganti 0.5 / 1 / 2 / 3 sesuai kebutuhan
+const float SPEED_MULTIPLIER = 4.0f; 
 
 // QUADTREE STRUCT
 struct QuadTree {
@@ -76,7 +76,7 @@ struct Ball {
     Ball(float x, float y, float r, sf::Vector2f vel, sf::Color color)
         : velocity(vel), radius(r)
     {
-        velocity *= SPEED_MULTIPLIER;   // 🔥 Kecepatan diatur di sini
+        velocity *= SPEED_MULTIPLIER;   
 
         shape.setRadius(r);
         shape.setFillColor(color);
