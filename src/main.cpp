@@ -4,7 +4,11 @@
 #include <cstdlib>
 
 // KECEPATAN
+<<<<<<< HEAD
 const float SPEED_MULTIPLIER = 4.0f; 
+=======
+const float SPEED_MULTIPLIER = 3.0f; 
+>>>>>>> de98faa (update terbaru)
 
 // QUADTREE STRUCT
 struct QuadTree {
@@ -77,7 +81,10 @@ struct Ball {
         : velocity(vel), radius(r)
     {
         velocity *= SPEED_MULTIPLIER;   
+<<<<<<< HEAD
 
+=======
+>>>>>>> de98faa (update terbaru)
         shape.setRadius(r);
         shape.setFillColor(color);
         shape.setOrigin(r, r);
@@ -87,36 +94,32 @@ struct Ball {
 
 // COLLISION FUNCTION
 void checkCollision(Ball &A, Ball &B) {
-    sf::Vector2f diff = B.shape.getPosition() - A.shape.getPosition();
-    float dist = std::sqrt(diff.x * diff.x + diff.y * diff.y);
+    float dx = B.shape.getPosition().x - A.shape.getPosition().x;
+    float dy = B.shape.getPosition().y - A.shape.getPosition().y;
+    float dist2 = dx*dx + dy*dy;
     float minDist = A.radius + B.radius;
 
-    if (dist < minDist) {
-        if (dist == 0) dist = 0.01f;
+    if (dist2 < minDist*minDist) {
+        float dist = std::sqrt(dist2);
+        if (dist == 0) dist = 0.01f; // hindari bagi 0
 
-        sf::Vector2f normal = diff / dist;
-        float overlap = minDist - dist;
+        // Geser bola supaya tidak saling menempel
+        float overlap = 0.5f * (minDist - dist);
+        A.shape.move(-dx / dist * overlap, -dy / dist * overlap);
+        B.shape.move( dx / dist * overlap,  dy / dist * overlap);
 
-        A.shape.move(-normal * (overlap / 2.f));
-        B.shape.move(normal * (overlap / 2.f));
-
-        sf::Vector2f vA = A.velocity;
-        sf::Vector2f vB = B.velocity;
-
-        float a1 = vA.x * normal.x + vA.y * normal.y;
-        float a2 = vB.x * normal.x + vB.y * normal.y;
-        float p = (2.f * (a1 - a2)) / 2.f;
-
-        A.velocity = vA - p * normal;
-        B.velocity = vB + p * normal;
+        // Balik arah bola
+        A.velocity = -A.velocity;
+        B.velocity = -B.velocity;
     }
 }
 
+
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Brute Force + QuadTree Demo");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "FP Strukdat 2 Algoritma");
     window.setFramerateLimit(60);
 
-    const int JUMLAH_BOLA = 10;
+    const int JUMLAH_BOLA = 50;
     bool useQuadTree = true;
 
     std::vector<Ball> balls;
@@ -128,8 +131,12 @@ int main() {
 
         sf::Vector2f velocity(rand() % 200 - 100, rand() % 200 - 100);
 
-        balls.emplace_back(x, y, radius, velocity, sf::Color::White);
+        // Warna acak
+        sf::Color color(rand() % 256, rand() % 256, rand() % 256);
+
+        balls.emplace_back(x, y, radius, velocity, color);
     }
+
 
     while (window.isOpen()) {
         sf::Event event;
