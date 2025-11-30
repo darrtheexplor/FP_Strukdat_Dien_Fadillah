@@ -25,16 +25,6 @@ Tujuan dari proyek ini adalah:
   - QuadTree (O(n log n))
 - Mudah switch algoritma dengan mengganti 1 variabel
 
-# Struktur Folder
-project/
-|── include/
-|    |── bolAA.hpp
-│── src/
-│    ├── main.cpp
-│    └── bolAA.cpp
-│── Makefile
-└── README.md
-
 # Penjelasan File
 bolAA.hpp & bolAA.cpp
 Berisi class 'bola' yang mengatur:
