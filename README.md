@@ -64,13 +64,8 @@ cek tabrakan bola i dan j
 - Kompleksitas: O(n²)
 
 2. QuadTree
-Ruang dijadikan grid dinamis:
-┌───────┬───────┐
-│   NW  │   NE  │
-├───────┼───────┤
-│   SW  │   SE  │
-└───────┴───────┘
-- Hanya bola dalam area kecil yang dibandingkan
+- Ruang dibagi menjadi 4 grid
+- Hanya bola dalam area kecil(grid) yang dibandingkan
 - Lebih cepat signifikan untuk jumlah bola besar
 - Kompleksitas: O(n log n)
 

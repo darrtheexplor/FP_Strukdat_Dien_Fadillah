@@ -3,6 +3,9 @@
 #include <cmath>
 #include <cstdlib>
 
+// KECEPATAN
+const float SPEED_MULTIPLIER = 4.0f; // ganti 0.5 / 1 / 2 / 3 sesuai kebutuhan
+
 // QUADTREE STRUCT
 struct QuadTree {
     sf::FloatRect boundary;
@@ -52,9 +55,8 @@ struct QuadTree {
         if (!boundary.intersects(range))
             return;
 
-        for (int idx : points) {
+        for (int idx : points)
             found.push_back(idx);
-        }
 
         if (divided) {
             NE->query(range, found);
@@ -74,6 +76,8 @@ struct Ball {
     Ball(float x, float y, float r, sf::Vector2f vel, sf::Color color)
         : velocity(vel), radius(r)
     {
+        velocity *= SPEED_MULTIPLIER;   // 🔥 Kecepatan diatur di sini
+
         shape.setRadius(r);
         shape.setFillColor(color);
         shape.setOrigin(r, r);
@@ -108,18 +112,17 @@ void checkCollision(Ball &A, Ball &B) {
     }
 }
 
-// MAIN
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Brute Force + QuadTree Demo");
     window.setFramerateLimit(60);
 
-    const int JUMLAH_BOLA = 10000;
-    bool useQuadTree = true;  // GANTI TRUE / FALSE
+    const int JUMLAH_BOLA = 10;
+    bool useQuadTree = true;
 
     std::vector<Ball> balls;
 
     for (int i = 0; i < JUMLAH_BOLA; i++) {
-        float radius = 10;
+        float radius = 20;
         float x = radius + rand() % (800 - (int)radius * 2);
         float y = radius + rand() % (600 - (int)radius * 2);
 
@@ -137,7 +140,7 @@ int main() {
 
         float dt = 1.f / 60.f;
 
-        //  MOVE BALLS
+        // Update posisi bola
         for (auto &b : balls) {
             sf::Vector2f pos = b.shape.getPosition();
             pos += b.velocity * dt;
@@ -152,44 +155,35 @@ int main() {
 
         // BRUTE FORCE
         if (!useQuadTree) {
-            for (size_t i = 0; i < balls.size(); i++) {
-                for (size_t j = i + 1; j < balls.size(); j++) {
+            for (size_t i = 0; i < balls.size(); i++)
+                for (size_t j = i + 1; j < balls.size(); j++)
                     checkCollision(balls[i], balls[j]);
-                }
-            }
         }
 
         // QUADTREE
         else {
             QuadTree qt({0, 0, 800, 600}, 4);
 
-            // Insert ball positions
-            for (int i = 0; i < balls.size(); i++) {
+            for (int i = 0; i < balls.size(); i++)
                 qt.insert(i, balls[i].shape.getPosition());
-            }
 
-            // Query neighbors
             for (int i = 0; i < balls.size(); i++) {
                 sf::Vector2f pos = balls[i].shape.getPosition();
                 float r = balls[i].radius * 2;
-
                 sf::FloatRect range(pos.x - r, pos.y - r, r * 2, r * 2);
 
                 std::vector<int> found;
                 qt.query(range, found);
 
-                for (int j : found) {
+                for (int j : found)
                     if (i != j)
                         checkCollision(balls[i], balls[j]);
-                }
             }
         }
 
         window.clear();
-
         for (auto &b : balls)
             window.draw(b.shape);
-
         window.display();
     }
 
