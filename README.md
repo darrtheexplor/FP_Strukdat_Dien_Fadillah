@@ -17,7 +17,7 @@ Tujuan dari proyek ini adalah:
 - Memberikan pemahaman konsep spasial partitioning untuk optimasi game development.
 
 # Fitur Utama
-- Bola bergerak otomatis dengan kecepatan acak
+- Bola bergerak otomatis dengan kecepatan yang dapat diatur
 - Tabrakan dengan dinding
 - Tabrakan antar bola (elastic collision)
 - Dua mode algoritma collision:
@@ -65,3 +65,4 @@ cek tabrakan bola i dan j
 
 # Kesimpulan:
 Pada proyek simulasi ini, algoritma Brute Force dan QuadTree telah berhasil diimplementasikan untuk mendeteksi tabrakan antar bola. Brute Force bekerja sederhana tetapi memiliki kompleksitas tinggi sehingga kurang efisien untuk jumlah objek besar. Sebaliknya, QuadTree membagi ruang dan hanya mengecek objek yang saling berdekatan, sehingga performanya jauh lebih baik dan skalabel. Dengan demikian, QuadTree merupakan pilihan yang lebih tepat untuk simulasi berskala besar, game, dan aplikasi yang memerlukan efisiensi tinggi.
+
